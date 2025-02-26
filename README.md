@@ -69,5 +69,5 @@ The input of the second program:
 ![entree.gif](readme/entree.gif)
 
 The ouput of the second program:
-![sortie.gif](readme/sortie.gif)
+![sortie.gif](readme/screenoutput.png)
 
