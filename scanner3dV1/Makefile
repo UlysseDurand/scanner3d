@@ -1,20 +1,20 @@
-CXX = clang++
-CXXFLAGS = -std=c++17 `pkg-config --cflags opencv4` -I /opt/homebrew/include/eigen3 -Wall -Wextra -O3
-LDFLAGS = `pkg-config --libs opencv4`
-TARGET = main
-SRCS = main.cpp
-OBJS = $(SRCS:.cpp=.o)
+.PHONY: build run
 
-all: $(TARGET)
+BUILD_FOLDER=build
+IMAGE_NAME=scanner3d
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
+build:
+	cd $(BUILD_FOLDER) && cmake .. && cmake --build .
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+run:
+	$(BUILD_FOLDER)/$(IMAGE_NAME) \
+	  -i data/ \
+	  -o output.obj \
+	  -N 45 \
+	  -H 518 \
+	  -W 518 \
+	  -x 200 \
+	  -y 200 \
+	  -z 200
 
-run: all
-	./$(TARGET)
 
-clean:
-	rm -f $(OBJS) $(TARGET)

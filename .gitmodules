@@ -1,0 +1,6 @@
+[submodule "scanner3dV1/external/CLI11"]
+	path = scanner3dV1/external/CLI11
+	url = https://github.com/CLIUtils/CLI11.git
+[submodule "scanner3dV1/external/MC"]
+	path = scanner3dV1/external/MC
+	url = https://github.com/aparis69/MarchingCubeCpp.git
