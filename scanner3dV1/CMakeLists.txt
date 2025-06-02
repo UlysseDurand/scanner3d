@@ -30,7 +30,3 @@ target_link_libraries(scanner3d
     CLI11::CLI11
 )
 target_include_directories(scanner3d PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/external)
-
-
-# Copy data directory to build directory
-file(COPY data/ DESTINATION ${CMAKE_BINARY_DIR}/data)

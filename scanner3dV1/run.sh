@@ -1,1 +1,0 @@
-. build/scanner3d
