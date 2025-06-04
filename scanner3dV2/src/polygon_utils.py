@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[26]:
 
 
 get_ipython().run_line_magic('matplotlib', 'ipympl')
@@ -11,10 +11,11 @@ from shapely.geometry import MultiPolygon, GeometryCollection, Polygon, LineStri
 from shapely.ops import triangulate
 
 
-# In[2]:
+# In[27]:
 
 
 def draw_multipolygon(multipolygon, ax, color="blue", alpha=0.2):
+    '''Draws a multiploygon (union of polygons) onto ax'''
     if isinstance(multipolygon, Polygon):
         multipolygon = MultiPolygon([multipolygon])
     
@@ -26,44 +27,29 @@ def draw_multipolygon(multipolygon, ax, color="blue", alpha=0.2):
             ax.fill(x, y, color="white")
 
 
-# In[3]:
+# In[28]:
 
 
-multipolyexample1 = Polygon(
-    [(0, 0), (0, 1), (0.5, 0.5), (1, 1), (1, 0)], 
-    [[(0.4, 0.2), (0.6, 0.2), (0.6, 0.4)]]
-)
-
-
-# In[4]:
-
-
-def extractpoints(multipol):
-    if isinstance(multipol, MultiPolygon) or isinstance(multipol, GeometryCollection):
+def extractpoints(x):
+    '''Outputs all the points that are in the shape'''
+    if isinstance(x, MultiPolygon) or isinstance(x, GeometryCollection):
         res = []
-        for poly in multipol.geoms:
+        for poly in x.geoms:
             res += extractpoints(poly)
         return res
-    elif isinstance(multipol, Polygon):
-        res = list(multipol.exterior.coords)
-        for interior in multipol.interiors:
+    elif isinstance(x, Polygon):
+        res = list(x.exterior.coords)
+        for interior in x.interiors:
             res += extractpoints(interior)
         return res
         
-    elif isinstance(multipol, LineString) or isinstance(multipol, Point) or isinstance(multipol, LinearRing):
-        return list(multipol.coords)
+    elif isinstance(x, LineString) or isinstance(x, Point) or isinstance(x, LinearRing):
+        return list(x.coords)
     else:
         return []
 
-if __name__ == "__main__":
-    _, axtestExtract = plt.subplots()
-    draw_multipolygon(multipolyexample1, axtestExtract)
-    xs, ys = zip(*extractpoints(multipolyexample1))
-    axtestExtract.plot(xs, ys, 'rx')
-    plt.show()
 
-
-# In[5]:
+# In[29]:
 
 
 def barycenter(tri):
@@ -73,10 +59,12 @@ def barycenter(tri):
     return Point((a[0]+b[0]+c[0])/3, (a[1]+b[1]+c[1])/3)
 
 def mytriangulatepoly(poly):
+    '''Triangulates any convex polygon'''
     res = list(filter(lambda tri: poly.contains(barycenter(tri)), triangulate(poly)))
     return res
 
 def mytriangulate(multipoly):
+    '''Triangulates any convex polygon or multipolygon of convex polygons'''
     if isinstance(multipoly, MultiPolygon):
         res = []
         for poly in multipoly.geoms:
@@ -85,7 +73,22 @@ def mytriangulate(multipoly):
     return mytriangulatepoly(multipoly)
 
 
-# In[6]:
+# In[30]:
+
+
+if __name__ == "__main__":
+    multipolyexample1 = Polygon(
+        [(0, 0), (0, 1), (0.5, 0.5), (1, 1), (1, 0)], 
+        [[(0.4, 0.2), (0.6, 0.2), (0.6, 0.4)]]
+    )
+    _, axtestExtract = plt.subplots()
+    draw_multipolygon(multipolyexample1, axtestExtract)
+    xs, ys = zip(*extractpoints(multipolyexample1))
+    axtestExtract.plot(xs, ys, 'rx')
+    plt.show()
+
+
+# In[31]:
 
 
 if __name__ == "__main__":
@@ -98,7 +101,7 @@ if __name__ == "__main__":
     plt.show()
 
 
-# In[7]:
+# In[32]:
 
 
 def distancesq(a, b):
@@ -146,8 +149,8 @@ if __name__ == "__main__":
     print(trianglestofaces(listcoupleidpoint, [Polygon([(0, 0), (1, 0), (1, 1)]), Polygon([(1, 1), (0, 1), (0, 0)])]))
 
 
-# In[8]:
+# In[33]:
 
 
-get_ipython().system('jupyter nbconvert --to script polygon_utils.ipynb')
+get_ipython().system('jupyter nbconvert --to script polygon_utils.ipynb --output-dir=../src/')
 

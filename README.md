@@ -17,7 +17,7 @@ rebuild the 3d object.
 
 Two approches were used to rebuild the 3d object
 
-## First method
+## First method (scanner3dV1)
 
 There is a 3d grid of voxels, at each shadow of the object, voxels out of the
 shadow are removed
@@ -27,9 +27,9 @@ in 2019).
 
 It is an approximation of the real shape
 
-The code is [here](scanner3dV1)
+The code is [here](scanner3dV1), written in C++.
 
-## Second method
+## Second method (scanner3dV2)
 
 Here the real intersection of the shadowed areas rotated with their respective
 angles is computed.
@@ -41,12 +41,12 @@ To reconstruct the mesh from the layer, the horizontal faces are the
 symmetrical difference of the multipolygons of adjacent layers, and the
 vertical faces are extrusions of the layers 
 
-The code is [here](scanner3dV2)
+The code is [here](scanner3dV2), written in Python.
 
 ## Generate input images
 
-To generate artificial images for the programs, use the Processing program in
-the `generate` folder
+To generate artificial images for the programs, use the [Processing](https://processing.org) program in
+the `generate_input` folder
 
 ## Report
 
@@ -56,18 +56,23 @@ Thanks to Yann PROST, Loïc Thomas and Gabin JOBERT--ROLIN for engineering and
 building the concrete scanner, making the acquisition of the images and
 processing the images.
 
-The object :
+The object's shadow :
+
 ![figure5](readme/figures/5.jpg)
 
-The input of the first program:
+The input of the scanner3dV1:
+
 ![figure6](readme/figures/6.jpg)
 
-The output of the first program:
+The output of scanner3dV1:
+
 ![figure9](readme/figures/9.jpg)
 
-The input of the second program:
+With a different input given to scanner3dV2:
+
 ![entree.gif](readme/entree.gif)
 
-The ouput of the second program:
+The output of scanner3dV2:
+
 ![sortie.gif](readme/screenoutput.png)
 

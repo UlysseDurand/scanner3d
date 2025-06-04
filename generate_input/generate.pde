@@ -26,7 +26,7 @@ void draw() {
   rotateZ(PI);
   rotateY(alpha);
   shape(s, 0, -decaly);
-  saveFrame("res/"+nf(frameCount,5)+".png");
+  saveFrame("generated_inputs/"+nf(frameCount,5)+".png");
   }
   else{
     exit();
