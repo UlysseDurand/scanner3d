@@ -17,7 +17,8 @@ pages:
     - pandoc scanner3dV1/README.md -o public/v1/index.html
 
     # Copy pre-generated HTML directly to /v2/
-    - cp scanner3dv2/notebooks/main_pipeline.html public/v2/index.html
+    - cp scanner3dV2/notebooks/main_pipeline.html public/v2/index.html
+    - cp -r scanner3dV2/notebooks/iframe_figures public/v2/
 
   artifacts:
     paths:
