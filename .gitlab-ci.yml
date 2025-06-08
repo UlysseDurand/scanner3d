@@ -1,6 +1,9 @@
-image: pandoc/core:latest
+image: ubuntu:22.04
 
 pages:
+  before_script:
+    - apt-get update && apt-get install -y pandoc curl
+
   script:
     # Make target folders
     - mkdir -p public
