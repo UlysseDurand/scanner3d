@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[26]:
+# In[1]:
 
 
 get_ipython().run_line_magic('matplotlib', 'ipympl')
@@ -9,25 +9,68 @@ get_ipython().run_line_magic('matplotlib', 'ipympl')
 from matplotlib import pyplot as plt
 from shapely.geometry import MultiPolygon, GeometryCollection, Polygon, LineString, Point, LinearRing
 from shapely.ops import triangulate
+import plotly.graph_objects as go
 
 
-# In[27]:
+# In[2]:
 
 
-def draw_multipolygon(multipolygon, ax, color="blue", alpha=0.2):
-    '''Draws a multiploygon (union of polygons) onto ax'''
+def rgba_str(color, alpha):
+        # Simple color name to rgba helper for common colors
+        colors = {
+            'blue': f'rgba(0,0,255,{alpha})',
+            'red': f'rgba(255,0,0,{alpha})',
+            'green': f'rgba(0,255,0,{alpha})',
+            'black': f'rgba(0,0,0,{alpha})',
+            'white': f'rgba(255,255,255,1)'
+        }
+        return colors.get(color, f'rgba(0,0,255,{alpha})')  # default blue
+
+
+# In[ ]:
+
+
+def draw_multipolygon(multipolygon, color="blue", alpha=0.2, showline=False):
+    '''Draws a multiploygon (union of polygons) onto ax, it returns a list of
+    plotly traces'''
     if isinstance(multipolygon, Polygon):
         multipolygon = MultiPolygon([multipolygon])
     
+    traces = []
+    
     for polygon in multipolygon.geoms:
+        # Exterior
         x, y = polygon.exterior.xy
-        ax.fill(x, y, alpha=alpha, color=color)  # Transparent fill
+        x, y = list(x), list(y)
         for interior in polygon.interiors:
-            x, y = interior.xy
-            ax.fill(x, y, color="white")
+            xi, yi = interior.xy
+            x += list(xi)
+            y += list(yi)
+
+        traces.append(go.Scatter(
+            x=x,
+            y=y,
+            fill='toself',
+            fillcolor=rgba_str(color, alpha),
+            line=dict(color='rgba(0,0,0,0)' if not(showline) else color),
+            mode='lines',
+            showlegend=False,
+            visible=True
+        ))
+    return traces
+
+def tracesToFig(traces, title=None):
+    res = go.Figure(data=traces)
+    res.update_layout(
+        xaxis=dict(scaleanchor="y"),
+        xaxis_title="x",
+        yaxis_title="y",
+        title=title
+    )
+    return res
 
 
-# In[28]:
+# In[4]:
 
 
 def extractpoints(x):
@@ -49,7 +92,7 @@ def extractpoints(x):
         return []
 
 
-# In[29]:
+# In[5]:
 
 
 def barycenter(tri):
@@ -73,35 +116,40 @@ def mytriangulate(multipoly):
     return mytriangulatepoly(multipoly)
 
 
-# In[30]:
+# In[6]:
 
 
 if __name__ == "__main__":
-    multipolyexample1 = Polygon(
+    multipolyexample1 = MultiPolygon([Polygon(
         [(0, 0), (0, 1), (0.5, 0.5), (1, 1), (1, 0)], 
         [[(0.4, 0.2), (0.6, 0.2), (0.6, 0.4)]]
-    )
-    _, axtestExtract = plt.subplots()
-    draw_multipolygon(multipolyexample1, axtestExtract)
+    ), Polygon([(-1, -1), (-1.1, -1), (-1.1, -1.1), (-1, -1.1)])])
+    traces = draw_multipolygon(multipolyexample1)
+    lafig = tracesToFig(traces)
     xs, ys = zip(*extractpoints(multipolyexample1))
-    axtestExtract.plot(xs, ys, 'rx')
-    plt.show()
+    lafig.add_trace(go.Scatter(x=xs, y=ys, mode='markers', name="points"))
+    lafig.update_layout(
+        xaxis=dict(scaleanchor="y"),
+        xaxis_title="x",
+        yaxis_title="y",
+        title="Example for draw_multipolygon and extractpoints"
+    )
+    lafig.show()
 
 
-# In[31]:
+# In[7]:
 
 
 if __name__ == "__main__":
     triexample1 = mytriangulate(multipolyexample1)
     print(MultiPolygon(triexample1))
     
-    _, axtestTri1 = plt.subplots()
-    draw_multipolygon(multipolyexample1, axtestTri1, color='red', alpha=0.2)
-    draw_multipolygon(MultiPolygon(triexample1), axtestTri1, alpha=0.2)
-    plt.show()
+    traces1 = draw_multipolygon(multipolyexample1, color='red', alpha=0.2)
+    traces2 = draw_multipolygon(MultiPolygon(triexample1), alpha=0.2, showline=True)
+    tracesToFig(traces1+traces2).show()
 
 
-# In[32]:
+# In[8]:
 
 
 def distancesq(a, b):
@@ -149,8 +197,9 @@ if __name__ == "__main__":
     print(trianglestofaces(listcoupleidpoint, [Polygon([(0, 0), (1, 0), (1, 1)]), Polygon([(1, 1), (0, 1), (0, 0)])]))
 
 
-# In[33]:
+# In[9]:
 
 
-get_ipython().system('jupyter nbconvert --to script polygon_utils.ipynb --output-dir=../src/')
+if __name__ == '__main__':
+    get_ipython().system('jupyter nbconvert --to script polygon_utils.ipynb --output-dir=../src/')
 

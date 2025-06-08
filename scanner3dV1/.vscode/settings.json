@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        ".als.json": "jsonc",
-        "core": "cpp",
-        "dense": "cpp",
-        "ios": "cpp"
-    }
-}
