@@ -13,8 +13,8 @@ pages:
     # Convert root README.md to HTML at /
     - pandoc README.md -o public/index.html
 
-    # Convert scanner3dv1/README.md to /v1/index.html
-    - pandoc scanner3dv1/README.md -o public/v1/index.html
+    # Convert scanner3dV1/README.md to /v1/index.html
+    - pandoc scanner3dV1/README.md -o public/v1/index.html
 
     # Copy pre-generated HTML directly to /v2/
     - cp scanner3dv2/notebooks/main_pipeline.html public/v2/index.html
