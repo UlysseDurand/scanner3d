@@ -20,8 +20,7 @@ pages:
     - cp style.css public/v1/
 
     # Copy pre-generated HTML directly to /v2/
-    - cp -s scanner3dV2/notebooks/main_pipeline.html public/v2/index.html --css=style.css
-    - cp style.css public/v2/
+    - cp -s scanner3dV2/notebooks/main_pipeline.html public/v2/index.html
     - cp -r scanner3dV2/notebooks/iframe_figures public/v2/
 
   artifacts:
