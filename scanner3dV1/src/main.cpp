@@ -52,14 +52,14 @@ Image initImage(Config config)
     {
         throw std::runtime_error("Failed to allocate image memory");
     }
-    return img;
+    return unique_ptr<bool[]>(img);
 }
-bool getPxValue(Config config, Image img, int x, int y)
+bool getPxValue(Config config, const Image &img, int x, int y)
 {
     int WIDTH = config.WIDTH;
     return img[y * WIDTH + x];
 }
-void setPxValue(Config config, Image img, int x, int y, bool v)
+void setPxValue(Config config, Image &img, int x, int y, bool v)
 {
     int WIDTH = config.WIDTH;
     img[y * WIDTH + x] = v;
@@ -96,11 +96,11 @@ VoxelGrid initVoxelGrid(Config config)
     {
         throw std::runtime_error("Failed to allocate voxel grid memory");
     }
-    return grid;
+    return unique_ptr<bool[]>(grid);
 }
 bool getValue(
     Config config,
-    VoxelGrid grid, int x, int y, int z)
+    const VoxelGrid &grid, int x, int y, int z)
 {
     int VOXEL_NX = config.VOXEL_NX;
     int VOXEL_NY = config.VOXEL_NY;
@@ -109,7 +109,7 @@ bool getValue(
 }
 void setValue(
     Config config,
-    VoxelGrid grid, int x, int y, int z, bool v)
+    VoxelGrid &grid, int x, int y, int z, bool v)
 {
     int VOXEL_NX = config.VOXEL_NX;
     int VOXEL_NY = config.VOXEL_NY;
@@ -238,7 +238,7 @@ Acquisition loadImagesInFolder(
                 continue;
             }
             count++;
-            result[imgnb] = cvImageToImage(config, img);
+            result[imgnb] = std::move(cvImageToImage(config, img));
             if (verbose)
             {
                 cout << "\rProgress: " << count << "/" << NB_IMAGES << flush;
@@ -256,7 +256,7 @@ Acquisition loadImagesInFolder(
 // respective angle) from acq
 VoxelGrid filterFromAcquisition(
     Config config,
-    Acquisition acq)
+    const Acquisition &acq)
 {
     int VOXEL_NX = config.VOXEL_NX;
     int VOXEL_NY = config.VOXEL_NY;
@@ -334,7 +334,7 @@ VoxelGrid filterFromAcquisition(
 
 void marchingCubes(
     Config config,
-    VoxelGrid grid)
+    VoxelGrid &grid)
 {
     int VOXEL_NX = config.VOXEL_NX;
     int VOXEL_NY = config.VOXEL_NY;
@@ -416,7 +416,7 @@ int main(int argc, char **argv)
 
     Acquisition images = loadImagesInFolder(config, config.INPUT_FOLDER);
 
-    VoxelGrid grid = filterFromAcquisition(config, images);
+    VoxelGrid grid = filterFromAcquisition(config, std::move(images));
 
     marchingCubes(config, grid);
 
