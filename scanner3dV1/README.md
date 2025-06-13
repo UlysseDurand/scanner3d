@@ -6,7 +6,7 @@ have black (in shadow) or white (not in shadow) pixel values.
 
 Then put these views in the `data/` folder, with name `X.png` for X the ID of
 the image. X should correspond to the angle of the shadow with the formula 
-$$angle = \frac{X * 360}{\text{NB\_IMAGES}}\degree$$
+$$angle = \frac{X * 360}{\text{NB\_IMAGES}}$$
 in degrees.
 
 Then change the parameters in the `Makefile` `run` target.
