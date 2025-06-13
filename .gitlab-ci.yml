@@ -5,23 +5,17 @@ pages:
     - apt-get update && apt-get install -y pandoc curl
 
   script:
-    # Make target folders
     - mkdir -p public
+    - docker run --rm -v "$(pwd):/data" ulyssedurand/readme2html:latest . . readme/figures
+
     - mkdir -p public/v1
+    - docker run --rm -v "$(pwd):/data" ulyssedurand/readme2html:latest scanner3dV1 v1/
+
     - mkdir -p public/v2
+    - docker run --rm -v "$(pwd):/data" ulyssedurand/readme2html:latest scanner3dV2 v2/
 
-    # Convert root README.md to HTML at /
-    - pandoc -s README.md -o public/index.html --css=style.css
-    - cp -r readme/figures public/
-    - cp style.css public/
-
-    # Convert scanner3dV1/README.md to /v1/index.html
-    - pandoc -s scanner3dV1/README.md -o public/v1/index.html --css=style.css
-    - cp style.css public/v1/
-
-    # Copy pre-generated HTML directly to /v2/
-    - cp scanner3dV2/notebooks/main_pipeline.html public/v2/index.html
-    - cp -r scanner3dV2/notebooks/iframe_figures public/v2/
+    - cp scanner3dV2/notebooks/main_pipeline.html public/v2nb/index.html
+    - cp -r scanner3dV2/notebooks/iframe_figures public/v2nb/
 
   artifacts:
     paths:
