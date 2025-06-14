@@ -19,14 +19,10 @@ pages:
 
 pagenb:
   stage: deploy
-  image: continuumio/miniconda3
+  image: jgoldfar/pandoc-nbconvert-docker
   script:
-    - conda env create -f scanner3dV2/environment.yml
-    - conda run --no-capture-output -n scan3d pip install -r scanner3dV2/requirements.txt
     - conda run --no-capture-output -n scan3d jupyter nbconvert scanner3dV2/notebooks/main_pipeline.ipynb --to html --output-dir=public/v2nb --TemplateExporter.extra_template_basedirs=scanner3dV2/notebooks/ --template mytemplate --no-input --execute
     - cp -r scanner3dV2/notebooks/mytemplate/static public/v2nb
-
-
 
   artifacts:
     paths:
