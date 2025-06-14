@@ -1,6 +1,6 @@
 # Scanner3D (V1)
 
-To scan a 3d object, get `NB_IMAGES` images of the object's horizotal shadows
+To scan a 3d object, get `NB_IMAGES` images of the object's horizontal shadows
 uniformly around the object on its horizontal plane. Try to preprocess it to
 have black (in shadow) or white (not in shadow) pixel values.
 
