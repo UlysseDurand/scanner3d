@@ -1,9 +1,9 @@
 stages:
-  - deploy1
-  - deploy2
+  - deploy
+  - merge
 
 pages:
-  stage: deploy1
+  stage: deploy
   image: 
     name: ulyssedurand/readme2html:1.0
     pull_policy: always
@@ -19,14 +19,20 @@ pages:
       - public
 
 pagenb:
-  stage: deploy2
+  stage: deploy
   image: jupyter/base-notebook
   script:
     - pip install -r scanner3dV2/requirements.txt
-    - jupyter nbconvert scanner3dV2/notebooks/main_pipeline.ipynb --to html --output-dir=public/v2nb --TemplateExporter.extra_template_basedirs=scanner3dV2/notebooks/ --template mytemplate --no-input --execute
-    - cp -r scanner3dV2/notebooks/mytemplate/static public/v2nb
-    - mv public/v2nb/main_pipeline.html public/v2nb/main.html
+    - jupyter nbconvert scanner3dV2/notebooks/main_pipeline.ipynb --to html --output-dir=public2/v2nb --TemplateExporter.extra_template_basedirs=scanner3dV2/notebooks/ --template mytemplate --no-input --execute
+    - cp -r scanner3dV2/notebooks/mytemplate/static public2/v2nb
+    - mv public2/v2nb/main_pipeline.html public2/v2nb/main.html
 
   artifacts:
     paths:
-      - public
+      - public2
+
+pagefinal:
+  stage: merge
+  needs: [pages, pagenb]
+  script:
+    - cp -r public2/ public/
