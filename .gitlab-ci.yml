@@ -2,7 +2,7 @@ stages:
   - deploy
   - merge
 
-pages:
+pagereadme:
   stage: deploy
   image: 
     name: ulyssedurand/readme2html:1.0
@@ -31,9 +31,9 @@ pagenb:
     paths:
       - public2
 
-pagefinal:
+pages:
   stage: merge
-  needs: [pages, pagenb]
+  needs: [pagereadme, pagenb]
   script:
     - mkdir -p public
     - cp -r public1 public/
