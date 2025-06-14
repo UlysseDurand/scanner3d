@@ -4,3 +4,11 @@
   {{ super() }}
   <link rel="stylesheet" href="{{ resources.base_url | default('') }}static/custom.css">
 {% endblock html_head %}
+{% block header %}
+  <div class="intro">
+    <a href="https://perso.ens-lyon.fr/ulysse.durand/">Main page</a>
+    <br><br>
+    <a href="https://gitlab.com/ulysse_durand/scanner3d">GitLab repository</a>
+  </div>
+  {{ super() }}
+{% endblock %}
