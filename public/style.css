@@ -1,9 +1,0 @@
-* {
-    width: min(40em, 60vw);
-    margin-left: auto;
-    margin-right: auto;
-}
-
-p {
-    text-indent: 2em;
-}

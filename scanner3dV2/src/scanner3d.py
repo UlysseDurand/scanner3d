@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from src.geom_util import intersection_multipoly, union_multipoly
 from src.polygon_utils import extractpoints, mytriangulate, draw_multipolygon, ptinlist, trianglestofaces, findpointid
 from src.mymesh import MyMesh
+from src.config import Scanner3dConfig, get_config
 
 def load_images(config, folder_path):
     '''
@@ -112,5 +113,27 @@ def layerstomesh(config, layers):
     return res
 
 def shadowToObj(config, shadows):
+    '''
+    Converts shadow images to a MyMesh
+    '''
     layers = getLayers(config, shadows)
-    return layerstomesh(layers)
+    return layerstomesh(config, layers)
+
+def main(config):
+    '''
+    Main pipeline
+    '''
+    print(config.__dict__)
+
+
+    print("Processing...")
+    shadows = load_images(config, config.input_folder)
+    mesh = shadowToObj(config, shadows)
+
+    mesh.export(config.output_folder)
+    print(f"Done, result saved to {config.output_folder}")
+
+
+if __name__ == '__main__':
+    config = get_config()
+    main(config)

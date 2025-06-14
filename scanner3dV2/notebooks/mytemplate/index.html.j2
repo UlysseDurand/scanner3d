@@ -1,0 +1,6 @@
+{% extends 'lab/index.html.j2' %}
+
+{% block html_head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ resources.base_url | default('') }}static/custom.css">
+{% endblock html_head %}

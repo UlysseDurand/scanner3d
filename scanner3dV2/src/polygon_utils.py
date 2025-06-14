@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
-get_ipython().run_line_magic('matplotlib', 'ipympl')
-
-from matplotlib import pyplot as plt
 from shapely.geometry import MultiPolygon, GeometryCollection, Polygon, LineString, Point, LinearRing
 from shapely.ops import triangulate
 import plotly.graph_objects as go
@@ -27,7 +24,7 @@ def rgba_str(color, alpha):
         return colors.get(color, f'rgba(0,0,255,{alpha})')  # default blue
 
 
-# In[ ]:
+# In[3]:
 
 
 def draw_multipolygon(multipolygon, color="blue", alpha=0.2, showline=False):
@@ -149,7 +146,7 @@ if __name__ == "__main__":
     tracesToFig(traces1+traces2).show()
 
 
-# In[8]:
+# In[ ]:
 
 
 def distancesq(a, b):
@@ -164,10 +161,6 @@ def findpointid(listofcouplepoints, pt, makeerror = True, visualize = False):
         if ptequalpt(pt, b):
             theid = a
     if (makeerror and theid == -1):
-        if visualize:
-            plt.plot(pt, 'b+', markersize=15)
-            plt.draw()
-            
         raise ValueError("point "+str(pt)+" not in listofcouplepoints")
     return theid
 
@@ -197,9 +190,10 @@ if __name__ == "__main__":
     print(trianglestofaces(listcoupleidpoint, [Polygon([(0, 0), (1, 0), (1, 1)]), Polygon([(1, 1), (0, 1), (0, 0)])]))
 
 
-# In[9]:
+# In[ ]:
 
 
 if __name__ == '__main__':
+    get_ipython().system('jupyter contrib nbextension install --user')
     get_ipython().system('jupyter nbconvert --to script polygon_utils.ipynb --output-dir=../src/')
 

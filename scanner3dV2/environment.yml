@@ -1,0 +1,6 @@
+name: scan3d
+channels:
+  - defaults
+dependencies:
+  - python=3.10.16
+  - pip
