@@ -1,8 +1,9 @@
 stages:
-  - deploy
+  - deploy1
+  - deploy2
 
 pages:
-  stage: deploy
+  stage: deploy1
   image: 
     name: ulyssedurand/readme2html:1.0
     pull_policy: always
@@ -18,7 +19,7 @@ pages:
       - public
 
 pagenb:
-  stage: deploy
+  stage: deploy2
   image: jupyter/base-notebook
   script:
     - pip install -r scanner3dV2/requirements.txt
