@@ -36,3 +36,6 @@ pagefinal:
   needs: [pages, pagenb]
   script:
     - cp -r public2/ public/
+  artifacts:
+    paths:
+      - public
