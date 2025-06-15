@@ -8,7 +8,7 @@ pagereadme:
     name: ulyssedurand/readme2html:1.0
     pull_policy: always
   script: 
-    - readme2html -s . -t public1 -a readme/figures -g https://gitlab.com/ulysse_durand/scanner3d
+    - readme2html -s . -t public1 -a readme/figures/ -g https://gitlab.com/ulysse_durand/scanner3d
 
     - readme2html -s scanner3dV1 -t public1/v1 -g https://gitlab.com/ulysse_durand/scanner3d
 
