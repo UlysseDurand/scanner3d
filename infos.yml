@@ -1,5 +1,6 @@
 date: 2019
 summary: 'Reconstructs a 3D mesh of an object from its shadows under different angles. One implementation is in C++ and uses the Marching Cubes algorithm, the other one is in Python and computes shapes intersection'
 summary_fr: "Reconstruit un maillage d'objet réel à partir de ses ombres sous différents angles. Une implémentation en C++ avec Marching Cubes et une en Python utilisant l'intersection de polygones"
+links:
   Demo: 'https://ulysse_durand.gitlab.io/scanner3d/v2nb'
   Video: 'https://www.youtube.com/shorts/9kxT4gUFv1E'
